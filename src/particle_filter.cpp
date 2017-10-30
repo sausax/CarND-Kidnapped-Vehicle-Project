@@ -31,16 +31,6 @@ void ParticleFilter::init(double x, double y, double theta, double stds[]) {
 	
 	normal_distribution<double> dist_theta(0, stds[2]);
 
-	/*int n = sizeof(stds)/sizeof(stds[0]);
-	cout << "Total std elements: " << n << endl;
-	cout << "Number of particles: " << num_particles << endl;
-	for(int i=0;i < n; i++){
-		cout << "Std: " << stds[i] << endl;
-	}
-
-	exit(0);
-	*/
-
 	for(int i=0;i<num_particles;i++){
 		Particle p;
 		p.id = i;
@@ -60,7 +50,7 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 	// NOTE: When adding noise you may find std::normal_distribution and std::default_random_engine useful.
 	//  http://en.cppreference.com/w/cpp/numeric/random/normal_distribution
 	//  http://www.cplusplus.com/reference/random/default_random_engine/
-	cout << "Inside prediction step " << endl;
+	//cout << "Inside prediction step " << endl;
 	default_random_engine gen;
 
 	// This line creates a normal (Gaussian) distribution for x.
@@ -95,9 +85,9 @@ void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::ve
 	// NOTE: this method will NOT be called by the grading code. But you will probably find it useful to 
 	//   implement this method and use it as a helper during the updateWeights phase.
 
-	cout << "In dataAssociation" << endl;
+	//cout << "In dataAssociation" << endl;
 
-	for(LandmarkObs obs: observations){
+	for(LandmarkObs &obs: observations){
 		double min_dist = dist(predicted[0].x, predicted[0].y, obs.x, obs.y);
 		obs.id = 0;
 
@@ -112,7 +102,7 @@ void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::ve
 			}
 		}
 	}
-	cout << "dataAssociation complete" << endl;
+	//cout << "dataAssociation complete" << endl;
 
 }
 
@@ -129,7 +119,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 	//   3.33
 	//   http://planning.cs.uiuc.edu/node99.html
 
-	cout << "In updateWeights" << endl;
+	//cout << "In updateWeights" << endl;
 
 	for(int i=0;i<num_particles;i++){
 		// Convert landmark coordinates from local to global map coordinates
@@ -161,12 +151,6 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 		particles[i].weight = 1;
 		for(int j=0;j<transformed.size();j++){
 
-			/*if(transformed[j].id < 0 || transformed[j].id > predicted.size()){
-				continue;
-			}*/
-
-			cout << "Current transformed landmark: " << transformed[j].id << " " 
-				<< transformed[j].x << " " << transformed[j].y << endl;
  
 			LandmarkObs closest_landmark = predicted[transformed[j].id];
 			double mu_x = closest_landmark.x;
@@ -184,7 +168,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 		// Update particle weight	
 	}
 
-	cout << "updateWeights complete" << endl;
+	//cout << "updateWeights complete" << endl;
 }
 
 void ParticleFilter::resample() {
@@ -192,7 +176,7 @@ void ParticleFilter::resample() {
 	// NOTE: You may find std::discrete_distribution helpful here.
 	//   http://en.cppreference.com/w/cpp/numeric/random/discrete_distribution
 
-	cout << "In resample" << endl;
+	//cout << "In resample" << endl;
 
 	vector<Particle> new_particles;
 
